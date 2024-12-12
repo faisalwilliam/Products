@@ -1,0 +1,50 @@
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Beställ Industriprodukter</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Beställningsform</h1>
+  <form id="orderForm">
+    <label for="productId">Produkt ID:</label>
+    <input type="number" id="productId" name="productId" required><br><br>
+    <label for="orderNumber">Ordernummer:</label>
+    <input type="number" id="orderNumber" name="orderNumber" required><br><br>
+    <button type="submit">Skicka Beställning</button>
+  </form>
+  <script>
+    const form = document.getElementById('orderForm');
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault(); // Förhindra standardskickning av formuläret
+      const productId = document.getElementById('productId').value;
+      const orderNumber = document.getElementById('orderNumber').value;
+      try {
+        const response = await fetch('/api/orders', { // Send to your API endpoint
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ productId, orderNumber })
+        });
+        if (response.ok) {
+          alert('Beställningen skickades!');
+          form.reset(); // Rensa formuläret
+        } else {
+          alert('Fel vid skicka beställning. Försök igen.');
+        }
+      } catch (error) {
+        console.error('Fel:', error);
+        alert('Fel vid skicka beställning. Försök igen.');
+      }
+    });
+  </script>
+</body>
+</html>
